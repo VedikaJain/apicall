@@ -1,0 +1,1 @@
+export { Marvel } from "./Marvel";

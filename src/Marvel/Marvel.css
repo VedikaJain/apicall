@@ -1,0 +1,49 @@
+.marvel__container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.marvel__input {
+    width: 80%;
+    margin: 20px 10px 0;
+    padding: 10px;
+    border: 2px solid green;
+    color: green;
+    font-weight: bold;
+}
+
+.marvel__cards {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin: 10px;
+}
+
+.marvel__card {
+    flex: 1 1 100%;
+    border: 5px solid red;
+    padding: 10px;
+    margin: 10px;
+    border-radius: 10px;
+}
+
+.marvel__image {
+    width: 100%;
+}
+
+.marvel__heading {
+    text-align: center;
+}
+
+@media (min-width: 376px) {
+    
+    .marvel__input {
+        width: 30%;
+    }
+
+    .marvel__card {
+        flex: 1 1 25%;
+    }
+
+}
