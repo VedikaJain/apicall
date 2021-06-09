@@ -1,4 +1,5 @@
-import React, { useState, useCallback, useEffect, ChangeEvent } from "react";
+import React, { useState, useRef, useEffect, ChangeEvent } from "react";
+import { debounceAPICall } from '../Utility';
 import { MarvelData } from './IMarvel';
 import "./Marvel.css";
 
@@ -13,43 +14,40 @@ export const Marvel: React.FC = () => {
     [search]
   );
 
-  console.log(data);
-
-  const fetchData = useCallback(() => {
+  const fetchData = useRef(debounceAPICall((url: string) =>
     fetch(url)
       .then((res) => res.json())
       .then((d) => {
-        console.log('hello', d);
         if (d && d.data?.results && d.data.results.length > 0) {
           setData(d.data.results);
         }
-      });
-  }, [url]);
+      })
+    , 1000));
 
   useEffect(() => {
-    fetchData();
-  }, [fetchData]);
+    fetchData.current(url);
+  }, [fetchData, url]);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     e.stopPropagation();
-    if(e.target && e.target) {
-        setSearch(e.target.value);
+    if (e.target && e.target) {
+      setSearch(e.target.value);
     }
   };
 
   return (
     <div className="marvel__container">
-        <input type="text" className="marvel__input" onChange={handleChange} defaultValue={search}/>
-        <div className="marvel__cards">
+      <input type="text" className="marvel__input" onChange={handleChange} defaultValue={search} />
+      <div className="marvel__cards">
         {data && data.length > 0 &&
-            data.map((each: MarvelData) => (
+          data.map((each: MarvelData) => (
             <div key={each.id} className="marvel__card">
-                <img className="marvel__image" src={each.thumbnail.path + '.' + each.thumbnail.extension} alt={each.name} />
-                <h4 className="marvel__heading">{each.name}</h4>
-                <p>{each.description}</p>
+              <img className="marvel__image" src={each.thumbnail.path + '.' + each.thumbnail.extension} alt={each.name} />
+              <h4 className="marvel__heading">{each.name}</h4>
+              <p>{each.description}</p>
             </div>
-            ))}
-        </div>
+          ))}
+      </div>
     </div>
   );
 };
